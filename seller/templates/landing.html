@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pappy Marketplace</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f8fafc;
+    color:#1e293b;
+}
+
+/* HEADER */
+
+header{
+    background: cadetblue;
+    padding:20px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+    position:sticky;
+    top:0;
+}
+
+.logo{
+    font-size:1.8rem;
+    font-weight:bold;
+    color: white;
+}
+
+nav{
+    display:flex;
+    gap:20px;
+}
+
+nav a{
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+}
+
+/* HERO */
+
+.hero{
+    min-height:90vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:50px 8%;
+}
+
+.hero-content{
+    max-width:800px;
+}
+
+.hero h1{
+    font-size:3.5rem;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:1.1rem;
+    color:#64748b;
+    line-height:1.8;
+    margin-bottom:35px;
+}
+
+.hero-buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    text-decoration:none;
+    padding:15px 30px;
+    border-radius:10px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.primary{
+    background:cadetblue;
+    color:white;
+}
+
+.primary:hover{
+    background: white;
+    color: cadetblue;
+    border: 2px solid cadetblue;
+}
+
+.secondary{
+    border:2px solid cadetblue;
+    color:cadetblue;
+}
+
+.secondary:hover{
+    background:cadetblue;
+    color:white;
+}
+
+/* SECTIONS */
+
+section{
+    padding:80px 8%;
+}
+
+.section-title{
+    text-align:center;
+    font-size:2rem;
+    margin-bottom:50px;
+}
+
+/* PRODUCTS */
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.product{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
+    transition:.3s;
+}
+
+.product:hover{
+    transform:translateY(-8px);
+}
+
+.product img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.product h3{
+    padding:15px 15px 5px;
+    font-size:18px;
+}
+
+.product p{
+    padding:0 15px 15px;
+    color:cadetblue;
+    font-weight:bold;
+}
+
+.view-btn{
+    display:block;
+    text-align:center;
+    margin:0 15px 15px;
+    padding:12px;
+    background:cadetblue;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+.no-products{
+    text-align:center;
+    color:#64748b;
+    font-size:1.1rem;
+}
+/* FEATURES */
+
+.features{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.feature{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
+}
+
+.feature h3{
+    margin-bottom:10px;
+}
+
+/* SELLER SECTION */
+
+.seller{
+    background:cadetblue;
+    color:white;
+    text-align:center;
+    border-radius:20px;
+    padding:60px 30px;
+}
+
+.seller h2{
+    margin-bottom:20px;
+    font-size:2.2rem;
+}
+
+.seller p{
+    max-width:700px;
+    margin:auto;
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+.seller a{
+    background:white;
+    color:cadetblue;
+}
+
+/* TESTIMONIALS */
+
+.testimonials{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.testimonial{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
+}
+
+.testimonial h4{
+    margin-top:15px;
+}
+
+/* FOOTER */
+footer{
+    background: rgb(20, 62, 63);
+    /* background:#0f172a; */
+    color:white;
+    text-align:center;
+    padding:30px;
+    margin-top:80px;
+}
+.search-box{
+    display:flex;
+    justify-content:center;
+    margin-bottom:30px;
+}
+
+.search-box input{
+    width:400px;
+    padding:15px;
+    border:2px solid cadetblue;
+    border-radius:10px 0 0 10px;
+    outline:none;
+}
+
+.search-box button{
+    padding:15px 25px;
+    border:none;
+    background:cadetblue;
+    color:white;
+    border-radius:0 10px 10px 0;
+    cursor:pointer;
+}
+.stats,.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    border: 2px solid cadetblue;
+    padding:60px 8%
+}
+.card{
+    background:#fff;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,.05)
+}
+.feature,
+.testimonial{
+    transition:.3s;
+}
+.feature:hover,
+.testimonial:hover{
+    transform:translateY(-8px);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hero h1{
+    font-size:2.4rem;
+}
+
+nav{
+    display:none;
+}
+}
+
+</style>
+</head>
+
+<body>
+<header>
+    <div class="logo">Marketplace</div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/buyer/signup/">Shop</a>
+        <a href="/seller/signup/">Sell</a>
+    </nav>
+</header>
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Buy, Sell & Grow Your Business Online</h1>
+        <form method="GET" action="">
+            <div class="search-box">
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Search products..."
+                    value="{{ request.GET.q }}"
+                >
+                <button type="submit">Search</button>
+            </div>
+        </form>
+        <p>
+            Pappy Marketplace connects buyers and sellers in one
+            trusted platform. Discover thousands of products from 
+            trusted sellers or start selling to customers across the country.
+        </p>
+        <div class="hero-buttons">
+            <a href="/buyer/signup/" class="btn primary">
+                Start Shopping
+            </a>
+            <a href="/seller/signup/" class="btn secondary">
+                Become a Seller
+            </a>
+        </div>
+    </div>
+</section>
+{% if request.GET.q %}
+    <h3>
+        Search results for "{{ request.GET.q }}"
+    </h3>
+{% endif %}
+<!-- PRODUCTS -->
+<section>
+    <h2 class="section-title">
+        Featured Products
+    </h2>
+    <div class="products">
+        {% for item in featured_products %}
+        <div class="product">
+            <img src="{{ item.item_image.url }}"
+                 alt="{{ item.title }}">
+            <h3>{{ item.title }}</h3>
+            <p>₦{{ item.price }}</p>
+            <a href="#" class="view-btn">
+                View Item
+            </a>
+        </div>
+        {% empty %}
+        <p class="no-products"> No matching products found.</p>
+        {% endfor %}
+    </div>
+</section>
+<!-- FEATURES -->
+<section>
+    <h2 class="section-title">Why Choose Us?</h2>
+    <div class="features">
+        <div class="feature">
+            <h3>🔒 Secure Payments</h3>
+            <p>Transactions are protected and safe.</p>
+        </div>
+        <div class="feature">
+            <h3>🚚 Fast Delivery</h3>
+            <p>Get your orders quickly and reliably.</p>
+        </div>
+        <div class="feature">
+            <h3>⭐ Trusted Sellers</h3>
+            <p>Verified vendors offering quality products.</p>
+        </div>
+        <div class="feature">
+            <h3>💬 Easy Support</h3>
+            <p>Friendly assistance whenever you need it.</p>
+        </div>
+    </div>
+</section>
+<!-- STATS -->
+<section class="stats">
+    <div class="stat">
+        <h2>2K+</h2>
+        <p>Active Buyers</p>
+    </div>
+    <div class="stat">
+        <h2>2K+</h2>
+        <p>Sellers</p>
+    </div>
+    <div class="stat">
+        <h2>5K+</h2>
+        <p>Products</p>
+    </div>
+    <div class="stat">
+        <h2>99%</h2>
+        <p>Satisfaction</p>
+    </div>
+</section>
+<!-- BUILT FOR EVERYONE -->
+<section>
+<h2 class="section-title">
+Built For Everyone
+</h2>
+<div class="features">
+    <div class="feature">
+        <h3>🛒 Buyers</h3>
+        <p>Browse products and shop securely.</p>
+    </div>
+
+    <div class="feature">
+        <h3>🏪 Sellers</h3>
+        <p>Create a store and reach more customers.</p>
+    </div>
+</div>
+</section>
+<!-- SELLER CTA -->
+<section>
+    <div class="seller">
+        <h2>Ready To Start Selling?</h2>
+        <p>
+            Join thousands of sellers and reach customers across
+            the country. Create your store in minutes and grow
+            your business today.
+        </p>
+        <a href="/seller/signup/" class="btn">
+            Become a Seller
+        </a>
+    </div>
+</section>
+<!-- TESTIMONIALS -->
+<section>
+    <h2 class="section-title">What Our Users Say</h2>
+    <div class="testimonials">
+        <div class="testimonial">
+            <p>
+                "The platform is simple and helped me reach more customers."
+            </p>
+            <h4>- Seller</h4>
+        </div>
+        <div class="testimonial">
+            <p>
+                "I found exactly what I needed and delivery was smooth."
+            </p>
+            <h4>- Buyer</h4>
+        </div>
+        <div class="testimonial">
+            <p>
+                "One of the easiest marketplaces I've used."
+            </p>
+            <h4>- Customer</h4>
+        </div>
+    </div>
+</section>
+<!-- FOOTER -->
+<footer>
+    <p>© 2025 Pappy Marketplace. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

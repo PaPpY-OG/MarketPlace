@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Products</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f8fafc;
+            color:#1e293b;
+        }
+
+        /* HEADER */
+        header{
+            background:cadetblue;
+            padding:20px 8%;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 2px 10px rgba(0,0,0,.05);
+        }
+
+        .logo{
+            color:white;
+            font-size:1.8rem;
+            font-weight:bold;
+        }
+
+        .nav-actions{
+            display:flex;
+            gap:12px;
+        }
+
+        .nav-btn{
+            text-decoration:none;
+            color:white;
+            padding:10px 18px;
+            border:1px solid white;
+            border-radius:8px;
+            font-weight:600;
+            transition:.3s;
+        }
+
+        .nav-btn:hover{
+            background:white;
+            color:cadetblue;
+        }
+
+        /* MAIN */
+        .container{
+            max-width:1200px;
+            margin:40px auto;
+            padding:0 20px;
+        }
+
+        .page-header{
+            background:white;
+            padding:25px;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,.08);
+            margin-bottom:25px;
+        }
+
+        .page-header h2{
+            color:cadetblue;
+            margin-bottom:8px;
+        }
+
+        .page-header p{
+            color:#64748b;
+        }
+
+        .table-card{
+            background:white;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,.08);
+            overflow:hidden;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th{
+            background:cadetblue;
+            color:white;
+            padding:15px;
+            text-align:left;
+        }
+
+        td{
+            padding:15px;
+            border-bottom:1px solid #e2e8f0;
+        }
+
+        tr:hover{
+            background:#f8fafc;
+        }
+
+        .product-image{
+            width:70px;
+            height:70px;
+            object-fit:cover;
+            border-radius:10px;
+        }
+
+        .status{
+            padding:6px 12px;
+            border-radius:20px;
+            font-size:.85rem;
+            font-weight:600;
+            display:inline-block;
+        }
+
+        .available{
+            background:#dcfce7;
+            color:#166534;
+        }
+
+        .sold{
+            background:#fee2e2;
+            color:#991b1b;
+        }
+        .edit-btn{
+            display:inline-block;
+            padding:6px 12px;
+            color:cadetblue;
+            text-decoration:none;
+            border-radius:8px;
+        }
+
+        .edit-btn:hover{
+            color:rgb(7, 35, 36);
+        }
+        .delete-btn{
+            display:inline-block;
+            padding:6px 12px;
+            color:#ef4444;
+            text-decoration:none;
+            border-radius:8px;
+        }
+
+        .delete-btn:hover{
+            color:rgb(100, 0, 0);
+        }
+
+        .empty-state{
+            text-align:center;
+            padding:40px;
+            color:#64748b;
+        }
+        .modal{
+            display:none;
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.5);
+            justify-content:center;
+            align-items:center;
+        }
+
+        .modal-content{
+            background:white;
+            padding:25px;
+            width:400px;
+            border-radius:10px;
+            position:relative;
+        }
+        .modal-content h2{
+            text-align:center;
+            color:cadetblue;
+        }
+        .modal-content .save{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:8px;
+            background:cadetblue;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.3s;
+        }
+        .modal-content input,
+        .modal-content textarea{
+            width:100%;
+            margin-bottom:10px;
+            padding:10px;
+            border:1px solid #ccc;
+            border-radius:6px;
+        }
+
+        .close{
+            position:absolute;
+            right:10px;
+            top:10px;
+            cursor:pointer;
+            font-size:20px;
+        }
+        @media(max-width:768px){
+
+            header{
+                flex-direction:column;
+                gap:12px;
+            }
+
+            .table-card{
+                overflow-x:auto;
+            }
+
+            table{
+                min-width:800px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Marketplace</div>
+
+    <div class="nav-actions">
+        <a href="/sellerDash/" class="nav-btn">Dashboard</a>
+        <a href="/createItem/" class="nav-btn">Add Product</a>
+        <a href="/Slogout/" class="nav-btn">Logout</a>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="page-header">
+        <h2>My Products</h2>
+        <p>
+            View and manage all products you've listed on the marketplace.
+        </p>
+    </div>
+
+    <div class="table-card">
+        <table>
+            <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for item in items %}
+            <tr>
+
+                <td>
+                    <img
+                        src="{{ item.item_image.url }}"
+                        alt="{{ item.title }}"
+                        class="product-image">
+                </td>
+
+                <td>{{ item.title }}</td>
+
+                <td>{{ item.description }}</td>
+
+                <td>₦{{ item.price }}</td>
+
+                <td>{{ item.quantity }}</td>
+
+                <td>{{ item.category }}</td>
+
+                <td>
+                    {% if item.is_sold %}
+                        <span class="status sold">
+                            Sold
+                        </span>
+                    {% else %}
+                        <span class="status available">
+                            Available
+                        </span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <button 
+                        class="edit-btn"
+                        onclick="openEditModal(
+                            '{{ item.id }}',
+                            '{{ item.title }}',
+                            '{{ item.description|escapejs }}',
+                            '{{ item.price }}',
+                            '{{ item.quantity }}',
+                            '{{ item.category }}'
+                        )">
+                        Edit
+                    </button>
+
+                    <a href="/deleteItem/{{ item.id }}/" class="delete-btn">
+                        Delete
+                    </a>
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">
+                    <div class="empty-state">
+                        No products listed yet.
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</div>
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Edit Product</h2>
+        <form id="editForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <input type="file" name="item_image" value="{{ item.item_image.url }}">
+
+            <input type="text" id="editTitle" name="title" value="{{ item.title }}" required>
+
+            <textarea id="editDesc" name="description" value="{{ item.description }}" required></textarea>
+
+            <input type="number" id="editPrice" name="price" value="{{ item.price }}" required>
+
+            <input type="number" id="editQty" name="quantity" value="{{ item.quantity }}" required>
+
+            <input type="text" id="editCategory" name="category" value="{{ item.category }}" required>
+
+            <button type="submit" class="save">Save Changes</button>
+        </form>
+    </div>
+</div>
+<script>
+    function openEditModal(id, title, desc, price, qty, category){
+
+        document.getElementById("editTitle").value = title;
+        document.getElementById("editDesc").value = desc;
+        document.getElementById("editPrice").value = price;
+        document.getElementById("editQty").value = qty;
+        document.getElementById("editCategory").value = category;
+
+        document.getElementById("editForm").action = "/editItem/" + id + "/";
+
+        document.getElementById("editModal").style.display = "flex";
+    }
+
+    function closeModal(){
+        document.getElementById("editModal").style.display = "none";
+    }
+</script>
+</body>
+</html>

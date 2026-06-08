@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Login - Marketplace</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #f8fafc;
+      color: #1e293b;
+    }
+
+    /* HEADER */
+    header {
+      background: cadetblue;
+      padding: 20px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: #f4b400;
+    }
+
+    /* LOGIN SECTION */
+    .login-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 90vh;
+      padding: 40px 8%;
+    }
+
+    .login-card {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,.1);
+      width: 100%;
+      max-width: 450px;
+    }
+
+    .login-card h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: cadetblue;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: .3s;
+    }
+
+    .form-group input:focus {
+      border-color: cadetblue;
+      box-shadow: 0 0 5px rgba(95,158,160,.4);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: cadetblue;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .3s;
+    }
+
+    .btn:hover {
+      background: #4f8f92;
+    }
+
+    .error {
+      color: #dc2626;
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: .95rem;
+    }
+
+    .signup-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: .9rem;
+    }
+
+    .signup-link a {
+      color: cadetblue;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+
+      .login-card {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Marketplace</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/buyer/signup/">Shop</a>
+      <a href="/seller/signup/">Sell</a>
+    </nav>
+  </header>
+
+  <!-- LOGIN SECTION -->
+  <section class="login-section">
+    <div class="login-card">
+
+      <h2>Welcome Back, Seller </h2>
+
+      {% if error %}
+        <p class="error">{{ message }}</p>
+      {% endif %}
+
+      <form method="POST" autocomplete="on">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn">Login</button>
+      </form>
+
+      <div class="signup-link">
+        Don’t have an account? <a href="/seller/signup/">Create one</a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

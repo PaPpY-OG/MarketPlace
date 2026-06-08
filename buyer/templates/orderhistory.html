@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+
+    <style>
+        body{
+            background:#f8fafc;
+            margin:0;
+            font-family:Arial, Helvetica, sans-serif;
+            color:#1e293b;
+        }
+
+        header{
+            background:cadetblue;
+            padding:20px 8%;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .logo{
+            color:white;
+            font-size:1.8rem;
+            font-weight:bold;
+        }
+
+        .nav a{
+            color:white;
+            text-decoration:none;
+            margin-left:12px;
+            border:1px solid white;
+            padding:8px 14px;
+            border-radius:8px;
+        }
+
+        .nav a:hover{
+            background:white;
+            color:cadetblue;
+        }
+
+        .container{
+            max-width:1100px;
+            margin:40px auto;
+            padding:0 20px;
+        }
+
+        h2{
+            text-align:center;
+            color:cadetblue;
+            margin-bottom:30px;
+        }
+
+        .orders-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+            gap:20px;
+        }
+
+        .order-card{
+            background:white;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,.08);
+            overflow:hidden;
+            transition:.3s;
+        }
+
+        .order-card:hover{
+            transform:translateY(-5px);
+        }
+
+        .order-img{
+            width:100%;
+            height:200px;
+            object-fit:cover;
+        }
+
+        .order-body{
+            padding:15px;
+        }
+
+        .order-title{
+            font-size:1.1rem;
+            font-weight:bold;
+            margin-bottom:8px;
+        }
+
+        .meta{
+            font-size:.9rem;
+            color:#64748b;
+            margin-bottom:6px;
+        }
+
+        .price{
+            font-size:1.1rem;
+            font-weight:bold;
+            color:cadetblue;
+            margin:10px 0;
+        }
+
+        .status{
+            display:inline-block;
+            padding:6px 12px;
+            border-radius:20px;
+            font-size:.8rem;
+            font-weight:600;
+        }
+
+        .delivered{
+            background:#dcfce7;
+            color:#166534;
+        }
+
+        .pending{
+            background:#fef9c3;
+            color:#854d0e;
+        }
+
+        .processing{
+            background:#dbeafe;
+            color:#1e40af;
+        }
+
+        .empty{
+            text-align:center;
+            padding:40px;
+            color:#64748b;
+            background:white;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,.08);
+        }
+
+        .btns{
+            text-align:center;
+            margin-top:30px;
+        }
+
+        .btn{
+            display:inline-block;
+            padding:10px 20px;
+            margin:5px;
+            background:black;
+            color:white;
+            text-decoration:none;
+            border-radius:8px;
+        }
+
+        .btn:hover{
+            background:gray;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Marketplace</div>
+
+    <div class="nav">
+        <a href="/buyerDash/">Shop</a>
+        <a href="/wishlist/">Wishlist</a>
+        <a href="/cart/">Cart</a>
+        <a href="/buyer/logout/">Logout</a>
+    </div>
+</header>
+
+<div class="container">
+
+    <h2>Your Orders</h2>
+
+    {% if purchases %}
+
+    <div class="orders-grid">
+
+        {% for item in purchases %}
+
+        <div class="order-card">
+
+            <img src="{{ item.item.item_image.url }}" class="order-img" alt="{{ item.item.title }}">
+
+            <div class="order-body">
+
+                <div class="order-title">
+                    {{ item.item.title }}
+                </div>
+
+                <div class="meta">
+                    Order #: {{ item.order_number }}
+                </div>
+
+                <div class="meta">
+                    Date: {{ item.purchase_date }}
+                </div>
+
+                <div class="price">
+                    ₦{{ item.amount }}
+                </div>
+                <div class="price">
+                    Quantity: {{ item.quantity }}
+                </div>
+<!-- 
+                {% if item.status == "delivered" %}
+                    <span class="status delivered">Delivered</span>
+
+                {% elif item.status == "processing" %}
+                    <span class="status processing">Processing</span>
+
+                {% else %}
+                    <span class="status pending">Pending</span>
+                {% endif %} -->
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty">
+        You have no orders yet.
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

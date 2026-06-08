@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+
+    <style>
+        body{
+            margin:0;
+            font-family:Arial, Helvetica, sans-serif;
+            background:#f8fafc;
+            color:#1e293b;
+        }
+
+        header{
+            background:cadetblue;
+            padding:20px 8%;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .logo{
+            color:white;
+            font-size:1.8rem;
+            font-weight:bold;
+        }
+
+        .nav a{
+            color:white;
+            text-decoration:none;
+            margin-left:12px;
+            border:1px solid white;
+            padding:8px 14px;
+            border-radius:8px;
+        }
+
+        .nav a:hover{
+            background:white;
+            color:cadetblue;
+        }
+
+        .container{
+            max-width:1100px;
+            margin:40px auto;
+            padding:0 20px;
+        }
+
+        .title{
+            font-size:2rem;
+            color:cadetblue;
+            margin-bottom:5px;
+        }
+
+        .subtitle{
+            color:#64748b;
+            margin-bottom:25px;
+        }
+
+        .grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+            gap:20px;
+        }
+
+        .card{
+            background:white;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,.08);
+            overflow:hidden;
+            display:flex;
+            flex-direction:column;
+        }
+
+        .card img{
+            width:100%;
+            height:200px;
+            object-fit:cover;
+        }
+
+        .card-body{
+            padding:15px;
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+        }
+
+        .price{
+            color:cadetblue;
+            font-weight:bold;
+            font-size:1.2rem;
+        }
+
+        .qty-box{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .qty-btn{
+            padding:6px 12px;
+            border:none;
+            cursor:pointer;
+            border-radius:6px;
+            background:#e2e8f0;
+            font-size:16px;
+        }
+
+        .qty-btn:hover{
+            background:#cbd5e1;
+        }
+
+        .qty{
+            font-weight:bold;
+        }
+
+        .btn{
+            padding:10px;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:600;
+        }
+
+        .remove{
+            background:#ef4444;
+            color:white;
+        }
+
+        .remove:hover{
+            background:#b91c1c;
+        }
+
+        .wishlist{
+            background:#f59e0b;
+            color:white;
+        }
+
+        .wishlist:hover{
+            background:#b45309;
+        }
+
+        .checkout{
+            background:cadetblue;
+            color:white;
+            padding:12px 18px;
+            border-radius:10px;
+            text-decoration:none;
+            font-weight:bold;
+        }
+
+        .checkout:hover{
+            background:#4f8f92;
+        }
+
+        .footer-box{
+            margin-top:30px;
+            background:white;
+            padding:20px;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,.08);
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+        }
+
+        .empty{
+            text-align:center;
+            padding:40px;
+            background:white;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,.08);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Marketplace</div>
+
+    <div class="nav">
+        <a href="/buyerDash/">Shop</a>
+        <a href="/wishlist/">Wishlist</a>
+        <a href="/orderhistory/">Orders</a>
+        <a href="/buyer/logout/">Logout</a>
+    </div>
+</header>
+
+<div class="container">
+
+    <h1 class="title">Shopping Cart</h1>
+    <p class="subtitle">Manage your items before checkout</p>
+
+    <p>Balance: ₦{{ buyer.wallet_balance }}</p>
+
+    {% if items %}
+
+    <div class="grid">
+
+        {% for item in items %}
+
+        <div class="card">
+
+            <img src="{{ item.item_image.url }}" alt="{{ item.title }}">
+
+            <div class="card-body">
+
+                <h3>{{ item.title }}</h3>
+
+                <div class="price">₦{{ item.price }}</div>
+
+                <!-- QUANTITY UPDATE -->
+                <div class="qty-box">
+
+                    <form action="{% url 'decrease_qty' item.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="qty-btn">-</button>
+                    </form>
+
+                    <span class="qty">{{ item.cart_qty }}</span>
+
+                    <form action="{% url 'increase_qty' item.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="qty-btn">+</button>
+                    </form>
+
+                </div>
+
+                <!-- ACTIONS -->
+                <form action="{% url 'remove_from_cart' item.id %}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn remove">Remove</button>
+                </form>
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <div class="footer-box">
+
+        <h3>Total: ₦{{ total }}</h3>
+
+        <a href="/checkout/" class="checkout">Checkout</a>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty">
+        Your cart is empty
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

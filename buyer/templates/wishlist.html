@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wishlist</title>
+
+<style>
+body{
+    background:#f8fafc;
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#1e293b;
+}
+
+/* HEADER */
+header{
+    background:cadetblue;
+    padding:20px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    color:white;
+    font-size:1.8rem;
+    font-weight:bold;
+}
+
+.nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:12px;
+    border:1px solid white;
+    padding:8px 14px;
+    border-radius:8px;
+}
+
+.nav a:hover{
+    background:white;
+    color:cadetblue;
+}
+
+/* LAYOUT */
+.container{
+    max-width:1200px;
+    margin:40px auto;
+    padding:0 20px;
+}
+
+.title{
+    color:cadetblue;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#64748b;
+    margin-bottom:25px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+    gap:25px;
+}
+
+/* CARD */
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    display:flex;
+    flex-direction:column;
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.content{
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.price{
+    color:cadetblue;
+    font-weight:bold;
+    font-size:1.2rem;
+}
+
+.meta{
+    display:flex;
+    justify-content:space-between;
+    font-size:.9rem;
+    color:#64748b;
+}
+
+.btn-group{
+    margin-top:auto;
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    flex:1;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+    text-align:center;
+    text-decoration:none;
+}
+
+.cart{
+    background:cadetblue;
+    color:white;
+}
+
+.remove{
+    background:#ef4444;
+    color:white;
+}
+
+.empty{
+    text-align:center;
+    padding:50px;
+    color:#64748b;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Marketplace</div>
+
+    <div class="nav">
+        <a href="/buyerDash/">Shop</a>
+        <a href="/cart/">Cart</a>
+        <a href="/orderhistory/">Orders</a>
+        <a href="/buyer/logout/">Logout</a>
+    </div>
+</header>
+
+<div class="container">
+
+    <h2 class="title">Your Wishlist</h2>
+    <p class="subtitle">All your saved products in one place.</p>
+
+    {% if wishlist_items %}
+
+    <div class="grid">
+
+        {% for w in wishlist_items %}
+
+        <div class="card">
+
+            <img src="{{ w.item.item_image.url }}" alt="{{ w.item.title }}">
+
+            <div class="content">
+
+                <h3>{{ w.item.title }}</h3>
+
+                <p>{{ w.item.description }}</p>
+
+                <div class="price">
+                    ₦{{ w.item.price }}
+                </div>
+
+                <div class="meta">
+                    <span>{{ w.item.category }}</span>
+                    <span>{{ w.item.quantity }} left</span>
+                </div>
+
+                <div class="btn-group">
+
+                    {% if w.item.quantity > 0 %}
+                    <form action="{% url 'add_to_cart' w.item.id %}" method="POST" style="flex:1;">
+                        {% csrf_token %}
+                        <button class="btn cart">Add to Cart</button>
+                    </form>
+                    {% endif %}
+
+                    <a href="/remove_wishlist/{{ w.item.id }}/" class="btn remove">
+                        Remove
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty">
+        Your wishlist is empty 💔
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

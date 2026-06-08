@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+
+    <style>
+        body{
+            background:#f8fafc;
+            margin:0;
+            font-family:Arial, Helvetica, sans-serif;
+            color:#1e293b;
+        }
+
+        header{
+            background:cadetblue;
+            padding:20px 8%;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .logo{
+            color:white;
+            font-size:1.8rem;
+            font-weight:bold;
+        }
+
+        .nav-actions{
+            display:flex;
+            gap:12px;
+        }
+
+        .nav-btn{
+            color:white;
+            text-decoration:none;
+            border:1px solid white;
+            padding:10px 18px;
+            border-radius:8px;
+        }
+
+        .nav-btn:hover{
+            background:white;
+            color:cadetblue;
+        }
+
+        .container{
+            max-width:1000px;
+            margin:40px auto;
+            padding:0 20px;
+        }
+
+        .profile-card{
+            background:white;
+            border-radius:15px;
+            padding:35px;
+            box-shadow:0 5px 15px rgba(0,0,0,.08);
+            margin-bottom:25px;
+        }
+
+        .profile-header{
+            text-align:center;
+            margin-bottom:30px;
+        }
+        .avatar-image{
+            width:120px;
+            height:120px;
+            border-radius:50%;
+            object-fit:cover;
+            border:4px solid cadetblue;
+        }
+        .avatar{
+            width:120px;
+            height:120px;
+            border-radius:50%;
+            background:cadetblue;
+            color:white;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:3rem;
+            font-weight:bold;
+            margin:auto;
+        }
+
+        .profile-header h1{
+            margin-top:15px;
+            color:cadetblue;
+        }
+
+        .info-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+        }
+
+        .info-box{
+            background:#f8fafc;
+            padding:20px;
+            border-radius:12px;
+        }
+
+        .info-box h4{
+            margin:0 0 10px;
+            color:cadetblue;
+        }
+
+        .info-box p{
+            margin:0;
+            font-size:1rem;
+        }
+
+        .stats-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:20px;
+        }
+
+        .stat-card{
+            background:white;
+            padding:25px;
+            border-radius:15px;
+            text-align:center;
+            box-shadow:0 5px 15px rgba(0,0,0,.08);
+        }
+
+        .stat-value{
+            font-size:2rem;
+            font-weight:bold;
+            color:cadetblue;
+        }
+
+        .action-buttons{
+            margin-top:30px;
+            display:flex;
+            justify-content:center;
+            flex-wrap:wrap;
+            gap:15px;
+        }
+
+        .btn{
+            background:cadetblue;
+            color:white;
+            text-decoration:none;
+            padding:12px 22px;
+            border-radius:8px;
+            border: none;
+            cursor:pointer;
+            font-weight:600;
+        }
+
+        .btn:hover{
+            background:#4f8f92;
+            border-color:none;
+        }
+        .modal{
+            display:none;
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.5);
+            justify-content:center;
+            align-items:center;
+        }
+
+        .modal-content{
+            background:white;
+            padding:25px;
+            width:90%;
+            max-width:400px;
+            border-radius:10px;
+            position:relative;
+            max-height:90vh;
+            overflow-y:auto;
+        }
+        .modal-content h2{
+            text-align:center;
+            color:cadetblue;
+        }
+        .modal-content .save{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:8px;
+            background:cadetblue;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.3s;
+        }
+        .modal-content input,
+        .modal-content textarea{
+            width:100%;
+            margin-bottom:10px;
+            padding:10px;
+            border:1px solid #ccc;
+            border-radius:6px;
+            box-sizing:border-box;
+        }
+
+        .close{
+            position:absolute;
+            right:10px;
+            top:10px;
+            cursor:pointer;
+            font-size:20px;
+        }
+        .error{
+            color:#991b1b;
+            margin:20px auto;
+            text-align:center;
+        }
+        .success{
+            color:#166534;
+            margin:20px auto;
+            text-align:center;
+        }
+        @media(max-width:768px){
+
+            header{
+                flex-direction:column;
+                gap:12px;
+            }
+
+            .table-card{
+                overflow-x:auto;
+            }
+
+            table{
+                min-width:800px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Marketplace</div>
+
+    <div class="nav-actions">
+        <a href="/sellerDash/" class="nav-btn">Dashboard</a>
+        <a href="/Slogout/" class="nav-btn">Logout</a>
+    </div>
+</header>
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% endif %}
+
+{% if success %}
+    <p class="success">{{ success }}</p>
+{% endif %}
+
+<div class="container">
+    <div class="profile-card">
+        <div class="profile-header">
+
+            {% if seller.profile_picture %}
+                <img
+                    src="{{ seller.profile_picture.url }}"
+                    class="avatar-image"
+                    alt="Profile Picture"
+                >
+            {% else %}
+                <div class="avatar">
+                    {{ seller.user.username|first|upper }}
+                </div>
+            {% endif %}
+
+            <h1>{{ seller.user.username }}</h1>
+
+            <button 
+                class="btn"
+                onclick="openEditModal()">
+                Edit Profile
+            </button> 
+        </div>
+
+        <div class="info-grid">
+
+            <div class="info-box">
+                <h4>Username</h4>
+                <p>{{ seller.user.username }}</p>
+            </div>
+
+            <div class="info-box">
+                <h4>Email</h4>
+                <p>{{ seller.user.email }}</p>
+            </div>
+
+            <div class="info-box">
+                <h4>Wallet Balance</h4>
+                <p>₦{{ seller.wallet_balance }}</p>
+            </div>
+
+            <div class="info-box">
+                <h4>Account Type</h4>
+                <p>Seller</p>
+            </div>
+            <div class="info-box">
+                <h4>Total Sales</h4>
+                <p>{{ sales_count }}</p>
+            </div>
+            <div class="info-box">
+                <h4>Joined</h4>
+                <p>{{ seller.user.date_joined|date:"M d, Y" }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="editModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" onclick="closeModal()"> &times; </span>
+
+        <h2>Edit Profile</h2>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if success %}
+            <p class="success">{{ success }}</p>
+        {% endif %}
+    
+        <form action="{% url 'sedit_profile' %}" method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <label>Profile Picture</label>
+            <input type="file" name="profile_picture">
+
+            <label>Username</label>
+            <input type="text" name="username" value="{{ seller.user.username }}" required>
+
+            <label>Email</label>
+            <input type="email" value="{{ seller.user.email }}" readonly>
+
+            <hr>
+
+            <h3>Change Password</h3>
+
+            <label>Current Password</label>
+            <input type="password" name="current_password">
+
+            <label>New Password</label>
+            <input type="password" name="new_password">
+
+            <label>Confirm New Password</label>
+            <input type="password" name="confirm_password">
+
+            <button type="submit" class="save"> Save Changes </button>
+        </form>
+    </div>
+</div>
+<script>
+function openEditModal() {
+    document.getElementById("editModal").style.display = "flex";}
+
+function closeModal() {
+    document.getElementById("editModal").style.display = "none";}
+
+window.onclick = function(event) {
+    let modal = document.getElementById("editModal");
+
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+{% if error or success %}
+<script>
+    document.getElementById("editModal").style.display = "flex";
+</script>
+{% endif %}
+</body>
+</html>

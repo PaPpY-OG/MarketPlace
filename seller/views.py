@@ -162,15 +162,6 @@ def viewItems(request):
     return render(request, 'view_items.html', {'items': items, 'seller':seller})
 
 
-
-
-
-    # return HttpResponse('''
-    #    <h4 style="text-align: center;">Are you a</h4>
-    #      <a href="/buysign/">BUYER</a> or <a href="/seller">SELLER</a>
-    #      '''
-    # )
-
 @login_required(login_url='sellerLog')
 def editItem(request, item_id):
     item = get_object_or_404(Item, id=item_id, seller__user=request.user)

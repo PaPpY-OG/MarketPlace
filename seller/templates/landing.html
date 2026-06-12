@@ -169,6 +169,8 @@ section{
     color:white;
     text-decoration:none;
     border-radius:8px;
+    border:none;
+    cursor:pointer;
 }
 .no-products{
     text-align:center;
@@ -293,6 +295,70 @@ footer{
 .testimonial:hover{
     transform:translateY(-8px);
 }
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.6);
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.modal-content{
+    background:white;
+    width:90%;
+    max-width:650px;
+    border-radius:15px;
+    padding:25px;
+    position:relative;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+.close{
+    position:absolute;
+    top:15px;
+    right:20px;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.modal-image{
+    width:100%;
+    height:350px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+.modal-price{
+    font-size:1.5rem;
+    font-weight:bold;
+    color:cadetblue;
+    margin-bottom:15px;
+}
+
+.action-btn{
+    display:block;
+    width:100%;
+    background:cadetblue;
+    color:white;
+    text-decoration:none;
+    border:none;
+    padding:14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    text-align:center;
+    margin-top:20px;
+}
+
+.action-btn:hover{
+    background:#4f8f92;
+}
 
 /* MOBILE */
 
@@ -367,9 +433,18 @@ nav{
                  alt="{{ item.title }}">
             <h3>{{ item.title }}</h3>
             <p>₦{{ item.price }}</p>
-            <a href="#" class="view-btn">
-                Quick View
-            </a>
+            <button
+                class="view-btn"
+                onclick="openModal(
+                    '{{ item.item_image.url }}',
+                    '{{ item.title|escapejs }}',
+                    '{{ item.price }}',
+                    '{{ item.category|escapejs }}',
+                    '{{ item.description|escapejs }}',
+                    '{{ item.quantity }}',
+                    '{{ item.id }}'
+                )">Quick View
+            </button>
         </div>
         {% empty %}
         <p class="no-products"> No matching products found.</p>
@@ -476,6 +551,92 @@ Built For Everyone
 <footer>
     <p>© 2025 Pappy Marketplace. All Rights Reserved.</p>
 </footer>
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img id="modalImage" class="modal-image" src="" alt="">
 
+        <h2 id="modalTitle"></h2>
+
+        <div class="modal-price">
+            ₦<span id="modalPrice"></span>
+        </div>
+
+        <p>
+            <strong>Category:</strong>
+            <span id="modalCategory"></span>
+        </p>
+
+        <p>
+            <strong>Available:</strong>
+            <span id="modalStock"></span>
+        </p>
+
+        <p id="modalDescription"></p>
+
+        {% if user.is_authenticated %}
+
+            <form
+                id="cartForm"
+                method="POST"
+            >
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="action-btn"
+                >
+                    Add To Cart
+                </button>
+            </form>
+
+        {% else %}
+
+            <a href="{% url 'buyerSign' %}" class="action-btn">
+                Create an Account To Purchase
+            </a>
+        {% endif %}
+    </div>
+</div>
+<script>
+    function openModal(
+        image,
+        title,
+        price,
+        category,
+        description,
+        stock,
+        itemId
+    ){
+
+        document.getElementById("modalImage").src = image;
+        document.getElementById("modalTitle").innerText = title;
+        document.getElementById("modalPrice").innerText = price;
+        document.getElementById("modalCategory").innerText = category;
+        document.getElementById("modalDescription").innerText = description;
+        document.getElementById("modalStock").innerText = stock;
+
+        let cartForm = document.getElementById("cartForm");
+
+        if(cartForm){
+            cartForm.action = "/add_to_cart/" + itemId + "/";
+        }
+
+        document.getElementById("productModal").style.display = "flex";
+    }
+
+    function closeModal(){
+        document.getElementById("productModal").style.display = "none";
+    }
+
+    window.onclick = function(event){
+
+        let modal = document.getElementById("productModal");
+
+        if(event.target == modal){
+            modal.style.display = "none";
+        }
+    }
+</script>
 </body>
 </html>

@@ -19,6 +19,9 @@ class Item(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    @property
+    def formatted_price(self):
+        return "{:,.2f}".format(self.price)
     category = models.CharField(max_length=50)
     quantity = models.PositiveIntegerField(default=1)
     is_sold = models.BooleanField(default=False)

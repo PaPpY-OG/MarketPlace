@@ -173,6 +173,20 @@
             border-radius:15px;
             box-shadow:0 5px 15px rgba(0,0,0,.08);
         }
+        @media(max-width:768px){
+            header{
+                flex-direction:column;
+                gap:12px;
+            }
+
+            .table-card{
+                overflow-x:auto;
+            }
+
+            table{
+                min-width:800px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -209,7 +223,7 @@
 
                 <h3>{{ item.title }}</h3>
 
-                <div class="price">₦{{ item.price }}</div>
+                <div class="price">₦{{ item.formatted_price }}</div>
 
                 <!-- QUANTITY UPDATE -->
                 <div class="qty-box">

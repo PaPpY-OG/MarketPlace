@@ -134,11 +134,25 @@ header{
     padding:50px;
     color:#64748b;
 }
+@media(max-width:768px){
+
+    header{
+        flex-direction:column;
+        gap:12px;
+    }
+
+    .table-card{
+        overflow-x:auto;
+    }
+
+    table{
+        min-width:800px;
+    }
+}
 </style>
 </head>
 
 <body>
-
 <header>
     <div class="logo">Marketplace</div>
 
@@ -172,7 +186,7 @@ header{
                 <p>{{ w.item.description }}</p>
 
                 <div class="price">
-                    ₦{{ w.item.price }}
+                    ₦{{ w.item.formatted_price }}
                 </div>
 
                 <div class="meta">

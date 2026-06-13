@@ -150,7 +150,21 @@
         .btn:hover{
             background:gray;
         }
+        @media(max-width:768px){
 
+            header{
+                flex-direction:column;
+                gap:12px;
+            }
+
+            .table-card{
+                overflow-x:auto;
+            }
+
+            table{
+                min-width:800px;
+            }
+        }
     </style>
 </head>
 <body>

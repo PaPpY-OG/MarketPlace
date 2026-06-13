@@ -69,7 +69,7 @@ def sellerLOG(request: HttpRequest):
 
 @login_required(login_url='sellerLog')
 def createItem(request: HttpRequest):
-    error, message = None, None
+    message = None
     if request.method == "POST":
         item_image = request.FILES.get('item_image')
         title = request.POST.get('title')
@@ -78,23 +78,17 @@ def createItem(request: HttpRequest):
         quantity = request.POST.get('quantity')
         category = request.POST.get('category')
         is_sold = request.POST.get('is_sold') == 'on'
-        #first check if item exist
-        try :
-                item_exist = Item.objects.filter(title = title).first()
-                if item_exist :
-                    error = 'Item already exists for this title'
-                else:
-                    price = float(price)
-                    seller = Seller.objects.get(user=request.user)
-                    item = Item.objects.create(item_image=item_image, title=title, description=description, price=price, quantity=quantity, category=category, 
-                    is_sold=is_sold, seller=seller)
 
-                    item.save()
-                    message = "Item created successfully"
-                    return redirect("seller_Dash")
-        except Exception as e :
-                error = str (e)
-    return render(request, 'createItems.html', {"error":error, "message":message})
+        price = float(price)
+        seller = Seller.objects.get(user=request.user)
+        item = Item.objects.create(item_image=item_image, title=title, description=description, price=price, quantity=quantity, category=category, 
+        is_sold=is_sold, seller=seller)
+
+        item.save()
+        message = "Item created successfully"
+        return redirect("seller_Dash")
+ 
+    return render(request, 'createItems.html', {"message":message})
 
 @login_required(login_url='sellerLog')
 def SellerDash(request: HttpRequest):
@@ -160,7 +154,6 @@ def viewItems(request):
     seller = Seller.objects.get(user=request.user)
     items = Item.objects.filter(seller=seller).order_by('-id')  # newest first
     return render(request, 'view_items.html', {'items': items, 'seller':seller})
-
 
 @login_required(login_url='sellerLog')
 def editItem(request, item_id):

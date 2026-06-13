@@ -293,7 +293,7 @@ def checkout(request):
         request.session['cart'] = {}
         request.session.modified = True
 
-        return redirect(request, 'checkout.html', {'buyer': buyer,'total': 0,'success': f'Purchase successful via {payment_method}!'})
+        return redirect('orderhistory')
     return render(request, 'checkout.html', {'buyer': buyer,'total': total})
 
 @login_required(login_url='buyersLogin')

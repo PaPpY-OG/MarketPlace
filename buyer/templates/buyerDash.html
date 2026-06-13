@@ -214,17 +214,61 @@ select{
 }
 @media(max-width:768px){
 
+    /* HEADER FIX */
     header{
         flex-direction:column;
-        gap:12px;
+        align-items:flex-start;
+        gap:15px;
+        padding:15px;
     }
 
-    .table-card{
-        overflow-x:auto;
+    .nav-actions{
+        flex-wrap:wrap;
+        gap:8px;
+        width:100%;
     }
 
-    table{
-        min-width:800px;
+    .nav-btn{
+        flex:1;
+        text-align:center;
+        padding:10px;
+        font-size:0.9rem;
+    }
+
+    /* DASHBOARD SPACING */
+    .dashboard{
+        margin:20px auto;
+        padding:0 15px;
+    }
+
+    /* FILTER BAR STACK */
+    .filter-bar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .filter-bar select,
+    .filter-bar input{
+        width:100% !important;
+    }
+
+    /* PRODUCT GRID FIX */
+    .product-grid{
+        grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
+        gap:15px;
+    }
+
+    /* CARD FIX */
+    .product-image{
+        height:160px;
+    }
+
+    .product-content{
+        padding:15px;
+    }
+
+    .product-price{
+        font-size:1.1rem;
     }
 }
 </style>

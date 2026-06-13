@@ -34,12 +34,14 @@ def sellerSIGNUP(request: HttpRequest):
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
 
-        if password1 != password2 or len(password1) < 8 :
-            error = 'ensure both passwords match and length is greater than 7'
+        if password1 != password2:
+            error = 'Ensure both passwords match'
+        elif len(password1) < 8:
+            error = 'Password must be at least 8 characters long'
         else : 
             try :
-                user_exist = User.objects.filter(username = username).first()
-                email_exist = User.objects.filter(email = email).first
+                user_exist = User.objects.filter(username = username).exists()
+                email_exist = User.objects.filter(email = email).exists()
                 if user_exist :
                     error = 'Username has been taken'
                 elif email_exist :

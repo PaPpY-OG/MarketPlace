@@ -174,19 +174,77 @@
             box-shadow:0 5px 15px rgba(0,0,0,.08);
         }
         @media(max-width:768px){
-            header{
-                flex-direction:column;
-                gap:12px;
-            }
 
-            .table-card{
-                overflow-x:auto;
-            }
-
-            table{
-                min-width:800px;
-            }
+        /* HEADER FIX */
+        header{
+            flex-direction:column;
+            align-items:flex-start;
+            gap:12px;
+            padding:15px;
         }
+
+        .nav{
+            display:flex;
+            flex-wrap:wrap;
+            gap:8px;
+            width:100%;
+        }
+
+        .nav a{
+            flex:1;
+            text-align:center;
+            padding:10px;
+            font-size:0.9rem;
+        }
+
+        /* PAGE SPACING */
+        .container{
+            margin:20px auto;
+            padding:0 15px;
+        }
+
+        .title{
+            font-size:1.6rem;
+        }
+
+        /* GRID FIX */
+        .grid{
+            grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
+            gap:15px;
+        }
+
+        /* CARD FIX */
+        .card img{
+            height:150px;
+        }
+
+        .card-body{
+            padding:12px;
+        }
+
+        /* QUANTITY FIX */
+        .qty-box{
+            justify-content:space-between;
+        }
+
+        .qty-btn{
+            padding:8px 14px;
+            font-size:18px;
+        }
+
+        /* FOOTER FIX */
+        .footer-box{
+            flex-direction:column;
+            align-items:stretch;
+            gap:15px;
+            text-align:center;
+        }
+
+        .checkout{
+            width:100%;
+            text-align:center;
+        }
+    }
     </style>
 </head>
 <body>

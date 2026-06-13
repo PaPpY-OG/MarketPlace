@@ -186,15 +186,32 @@
 
         @media(max-width:768px){
 
-            header{
-                flex-direction:column;
-                gap:12px;
-            }
-
-            .checkout-grid{
-                grid-template-columns:1fr;
-            }
+        header{
+            flex-direction:column;
+            align-items:flex-start;
+            gap:10px;
         }
+
+        .nav-actions{
+            flex-wrap:wrap;
+        }
+
+        .checkout-grid{
+            grid-template-columns:1fr;
+        }
+
+        .container{
+            padding:0 12px;
+        }
+
+        .card{
+            padding:18px;
+        }
+
+        .btn{
+            font-size:14px;
+        }
+    }
     </style>
 </head>
 <body>

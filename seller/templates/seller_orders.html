@@ -13,12 +13,13 @@
             color:#1e293b;
         }
 
+        /* HEADER */
         header{
-            background:cadetblue;
-            padding:20px 8%;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
+        background:cadetblue;
+        padding:20px 8%;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
         }
 
         .logo{
@@ -27,16 +28,20 @@
             font-weight:bold;
         }
 
-        .nav a{
+        .nav-actions{
+            display:flex;
+            gap:12px;
+        }
+
+        .nav-btn{
             color:white;
             text-decoration:none;
-            margin-left:12px;
             border:1px solid white;
-            padding:8px 14px;
+            padding:10px 18px;
             border-radius:8px;
         }
 
-        .nav a:hover{
+        .nav-btn:hover{
             background:white;
             color:cadetblue;
         }
@@ -150,6 +155,27 @@
         .btn:hover{
             background:gray;
         }
+        .update-btn{
+        background:cadetblue;
+        color:white;
+        border:none;
+        padding:8px 14px;
+        border-radius:8px;
+        cursor:pointer;
+        margin-top:10px;
+    }
+
+    .update-btn:hover{
+        background:#4f8f92;
+    }
+
+    .status-select{
+        width:100%;
+        padding:10px;
+        border:1px solid #ccc;
+        border-radius:8px;
+        margin-top:10px;
+    }
         @media(max-width:768px){
 
             header{
@@ -170,15 +196,14 @@
 <body>
 
 <header>
-    <div class="logo">Marketplace</div>
+        <div class="logo">Marketplace</div>
 
-    <div class="nav">
-        <a href="/buyerDash/">Shop</a>
-        <a href="/wishlist/">Wishlist</a>
-        <a href="/cart/">Cart</a>
-        <a href="/buyer/logout/">Logout</a>
-    </div>
-</header>
+        <div class="nav-actions">
+            <a href="{% url 'seller_profile' %}" class="nav-btn"> Profile </a>
+            <a href="{% url 'seller_orders' %}" class="nav-btn">Orders</a>
+            <a href="{% url 'Slogout' %}" class="nav-btn"> Logout </a>
+        </div>
+    </header>
 
 <div class="container">
 
@@ -188,42 +213,76 @@
 
     <div class="orders-grid">
 
-        {% for item in purchases %}
+        {% for purchase in purchases %}
 
         <div class="order-card">
 
-            <img src="{{ item.item.item_image.url }}" class="order-img" alt="{{ item.item.title }}">
+            <img src="{{ purchase.item.item_image.url }}" class="order-img" alt="{{ purchase.item.title }}">
 
             <div class="order-body">
 
                 <div class="order-title">
-                    {{ item.item.title }}
+                    {{ purchase.item.title }}
                 </div>
 
                 <div class="meta">
-                    Order #: {{ item.order_number }}
+                    Order #: {{ purchase.order_number }}
                 </div>
 
                 <div class="meta">
-                    Date: {{ item.purchase_date }}
+                    Buyer: {{ purchase.buyer.user.username }}
+                </div>
+
+                <div class="meta">
+                    Date: {{ purchase.purchase_date }}
+                </div>
+
+                <div class="meta">
+                    Qty: {{ purchase.quantity }}
+                </div>
+
+                <div class="meta">
+                    Unit Price: ₦{{ purchase.item.price }}
                 </div>
 
                 <div class="price">
-                    ₦{{ item.amount }}
+                    Total: ₦{{ purchase.amount }}
                 </div>
-                <div class="price">
-                    Quantity: {{ item.quantity }}
+                <div class="meta">
+                    Status:
+                    <span class="
+                        {% if purchase.status == 'Processing' %}
+                            processing
+                        {% elif purchase.status == 'Shipped' %}
+                            shipped
+                        {% elif purchase.status == 'Delivered' %}
+                            delivered
+                        {% endif %}">
+                        {{ purchase.status }}
+                    </span>
                 </div>
 
-                {% if item.status == "Delivered" %}
-                    <span class="status delivered">Delivered</span>
+                <form action="{% url 'update_order_status' purchase.id %}" method="POST">
+                {% csrf_token %}
 
-                {% elif item.status == "Processing" %}
-                    <span class="status processing">Processing</span>
+                <select name="status" class="status-select">
 
-                {% else %}
-                    <span class="status shipped">Shipped</span>
-                {% endif %}
+                    <option value="Processing" {% if purchase.status == 'Processing' %}selected{% endif %}>
+                        Processing
+                    </option>
+
+                    <option value="Shipped" {% if purchase.status == 'Shipped' %}selected{% endif %}>
+                        Shipped
+                    </option>
+
+                    <option value="Delivered" {% if purchase.status == 'Delivered' %}selected{% endif %}>
+                        Delivered
+                    </option>
+                </select>
+                <button type="submit" class="update-btn">
+                        Update Status
+                </button>
+            </form>
             </div>
         </div>
         {% endfor %}
@@ -233,7 +292,6 @@
         You have no orders yet.
     </div>
     {% endif %}
-
 </div>
 
 </body>

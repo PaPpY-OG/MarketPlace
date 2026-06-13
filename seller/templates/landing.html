@@ -364,12 +364,62 @@ footer{
 
 @media(max-width:768px){
 
-.hero h1{
-    font-size:2.4rem;
+header{
+    flex-direction:column;
+    gap:15px;
+    padding:15px;
 }
 
 nav{
-    display:none;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:12px;
+}
+
+.hero{
+    min-height:auto;
+    padding:40px 20px;
+}
+
+.hero h1{
+    font-size:2rem;
+}
+
+section{
+    padding:50px 20px;
+}
+
+.search-box{
+    flex-direction:column;
+    gap:10px;
+}
+
+.search-box input{
+    width:100%;
+    border-radius:10px;
+}
+
+.search-box button{
+    width:100%;
+    border-radius:10px;
+}
+
+.products{
+    grid-template-columns:1fr;
+}
+
+.stats{
+    padding:30px 20px;
+}
+
+.modal-content{
+    width:95%;
+    padding:15px;
+}
+
+.modal-image{
+    height:250px;
 }
 }
 

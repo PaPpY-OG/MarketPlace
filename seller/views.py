@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .models import Item, Seller
+from buyer.models import Purchase
 from django.db.models import Q
 
 
@@ -143,6 +144,26 @@ def change_password(request):
             else:
                 error = 'Current password is incorrect'
     return render(request, 'Sprofile.html', {'error': error, 'success': success})
+
+@login_required(login_url='sellerLog')
+def seller_orders(request):
+
+    seller = Seller.objects.get(user=request.user)
+
+    purchases = Purchase.objects.filter(item__seller=seller).order_by('-purchase_date')
+
+    return render(request, 'seller_orders.html',{'purchases': purchases})
+
+@login_required(login_url='sellerLogin')
+def update_order_status(request, purchase_id):
+
+    purchase = get_object_or_404(Purchase, id=purchase_id)
+
+    status = request.POST.get('status')
+
+    purchase.status = status
+    purchase.save()
+    return redirect('seller_orders')
 
 @login_required(login_url='sellerLog')
 def Logout(request:HttpRequest):

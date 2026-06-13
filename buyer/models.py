@@ -18,12 +18,21 @@ class Buyer(models.Model):
         return f"Buyer: {self.user.username}"
 
 class Purchase(models.Model):
+
+    STATUS_CHOICES = (
+        ('PROCCESSING', 'Processing'),
+        ('SHIPPED', 'Shipped'),
+        ('DELIVERED', 'Delivered'),
+    )
+
     buyer = models.ForeignKey(Buyer, on_delete=models.CASCADE)
     order_number = models.CharField(max_length=20, unique=True, default=generateOrderNumber)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     quantity = models.IntegerField(default=1)
     purchase_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='PROCCESSING')
+
 
     def __str__(self):
         return f"Purchase: {self.item.title} by {self.buyer.user.username} on {self.purchase_date}"

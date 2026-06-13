@@ -138,15 +138,60 @@ header{
 
     header{
         flex-direction:column;
-        gap:12px;
+        align-items:flex-start;
+        gap:10px;
     }
 
-    .table-card{
-        overflow-x:auto;
+    .nav{
+        display:flex;
+        flex-wrap:wrap;
+        gap:8px;
     }
 
-    table{
-        min-width:800px;
+    .nav a{
+        margin-left:0;
+        padding:6px 10px;
+        font-size:14px;
+    }
+
+    .container{
+        padding:0 12px;
+        margin:20px auto;
+    }
+
+    .title{
+        font-size:1.5rem;
+    }
+
+    .subtitle{
+        font-size:0.9rem;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+
+    .card img{
+        height:180px;
+    }
+
+    .content{
+        padding:15px;
+    }
+
+    .btn-group{
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .btn{
+        width:100%;
+        font-size:14px;
+    }
+
+    .price{
+        font-size:1.1rem;
     }
 }
 </style>

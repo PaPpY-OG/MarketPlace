@@ -291,8 +291,13 @@
             </div>
 
             <div class="info-box">
-                <h4>Wallet Balance</h4>
-                <p>₦{{ seller.wallet_balance }}</p>
+                <h4>Payment Details</h4>
+                <p> {% if seller.payment_details %}
+                        {{ seller.payment_details|linebreaksbr }}
+                    {% else %}
+                        No payment details added yet.
+                    {% endif %}
+                </p>
             </div>
 
             <div class="info-box">
@@ -351,6 +356,18 @@
 
             <label>Confirm New Password</label>
             <input type="password" name="confirm_password">
+
+            <h3>Payment Details</h3>
+            <label>Account Information</label>
+            <textarea
+                name="payment_details"
+                rows="5"
+                placeholder="
+                Bank Name: 
+                Account Number: 
+                Account Holder Name: "
+                required
+            >{{ seller.payment_details|default:"" }}</textarea>
 
             <button type="submit" class="save"> Save Changes </button>
         </form>

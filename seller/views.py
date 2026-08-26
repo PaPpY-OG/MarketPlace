@@ -3,9 +3,11 @@ from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from .models import Item, Seller
+from .models import Item, Seller, Withdrawal
 from buyer.models import Purchase
 from django.db.models import Q
+from decimal import Decimal, InvalidOperation
+from django.db import transaction
 
 
 # Create your views here.
@@ -114,16 +116,104 @@ def edit_profile(request):
 
         username = request.POST.get('username')
         picture = request.FILES.get('profile_picture')
+        payment_details = request.POST.get('payment_details')
 
         request.user.username = username
         request.user.save()
 
         if picture:
             seller.profile_picture = picture
-
+        seller.payment_details = payment_details
         seller.save()
 
     return redirect('seller_profile')
+
+@login_required(login_url='sellerLog')
+def withdraw_funds(request):
+
+    seller = Seller.objects.get(user=request.user)
+
+    total_items = Item.objects.filter(seller=seller).count()
+    sold_items = Item.objects.filter(
+        seller=seller,
+        is_sold=True
+    ).count()
+
+    if request.method == 'POST':
+
+        amount_input = request.POST.get('amount', '').strip()
+
+        # Check payment details
+        if not seller.payment_details:
+            return render(request, 'sellerDash.html', {
+                'seller': seller,
+                'total_items': total_items,
+                'sold_items': sold_items,
+                'error': 'Please add your payment details before withdrawing.'
+            })
+
+        # Check if amount was entered
+        if not amount_input:
+            return render(request, 'sellerDash.html', {
+                'seller': seller,
+                'total_items': total_items,
+                'sold_items': sold_items,
+                'error': 'Please enter an amount.'
+            })
+
+        # Convert amount to Decimal
+        try:
+            amount = Decimal(amount_input)
+
+        except (InvalidOperation, ValueError, TypeError):
+
+            return render(request, 'sellerDash.html', {
+                'seller': seller,
+                'total_items': total_items,
+                'sold_items': sold_items,
+                'error': 'Please enter a valid amount.'
+            })
+
+        # Amount must be greater than zero
+        if amount <= 0:
+
+            return render(request, 'sellerDash.html', {
+                'seller': seller,
+                'total_items': total_items,
+                'sold_items': sold_items,
+                'error': 'Amount must be greater than zero.'
+            })
+
+        # Check wallet balance
+        if amount > seller.wallet_balance:
+
+            return render(request, 'sellerDash.html', {
+                'seller': seller,
+                'total_items': total_items,
+                'sold_items': sold_items,
+                'error': 'Insufficient funds in wallet.'
+            })
+
+        # Create withdrawal and deduct wallet balance
+        with transaction.atomic():
+
+            Withdrawal.objects.create(
+                seller=seller,
+                amount=amount,
+                status='PENDING'
+            )
+
+            seller.wallet_balance -= amount
+            seller.save()
+
+        return render(request, 'sellerDash.html', {
+            'seller': seller,
+            'total_items': total_items,
+            'sold_items': sold_items,
+            'success': 'Withdrawal request submitted successfully.'
+        })
+
+    return redirect('seller_Dash')
 
 @login_required(login_url='sellerLog')
 def change_password(request):
